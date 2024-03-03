@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:city_hygiene_app/components/common/custom_form_button.dart';
 import 'package:city_hygiene_app/components/common/custom_input_field.dart';
+import 'package:city_hygiene_app/components/common/custom_input_prefix.dart';
 import 'package:city_hygiene_app/components/common/page_header.dart';
 import 'package:city_hygiene_app/components/common/page_heading.dart';
 import 'package:city_hygiene_app/components/login_page.dart';
@@ -18,8 +19,27 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   File? _profileImage;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _communeController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
 
   final _signupFormKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _firstNameController.dispose();
+    _emailController.dispose();
+    _addressController.dispose();
+    _communeController.dispose();
+    _passwordController.dispose();
+    _phoneNumberController.dispose();
+    super.dispose();
+  }
 
   Future _pickProfileImage() async {
     try {
@@ -35,6 +55,7 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffEEF1F3),
@@ -54,64 +75,85 @@ class _SignupPageState extends State<SignupPage> {
                   child: Column(
                     children: [
                       const PageHeading(
-                        title: 'Sign-up',
-                      ),
-                      SizedBox(
-                        width: 130,
-                        height: 130,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey.shade200,
-                          backgroundImage: _profileImage != null
-                              ? FileImage(_profileImage!)
-                              : null,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                bottom: 5,
-                                right: 5,
-                                child: GestureDetector(
-                                  onTap: _pickProfileImage,
-                                  child: Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue.shade400,
-                                      border: Border.all(
-                                          color: Colors.white, width: 3),
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                    child: const Icon(
-                                      Icons.camera_alt_sharp,
-                                      color: Colors.white,
-                                      size: 25,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        title: 'Enregistrement',
                       ),
                       const SizedBox(
                         height: 16,
                       ),
-                      CustomInputField(
-                          labelText: 'Name',
-                          hintText: 'Your name',
-                          isDense: true,
+                      CustomPrefixInput(
+                          labelText: 'Nom',
+                          hintText: 'Votre nom',
+                          prefixIcon: const Icon(Icons.person),
+                          prefixPresent: true,
+                          textEditingController: _nameController,
+                          inputPresent: true,
+                          textInputType: TextInputType.name,
                           validator: (textValue) {
                             if (textValue == null || textValue.isEmpty) {
-                              return 'Name field is required!';
+                              return 'Ce champs est requis!';
                             }
                             return null;
                           }),
                       const SizedBox(
                         height: 16,
                       ),
-                      CustomInputField(
+                      CustomPrefixInput(
+                          labelText: 'Prénom',
+                          hintText: 'Votre prénom',
+                          prefixIcon: const Icon(Icons.person),
+                          prefixPresent: true,
+                          textEditingController: _nameController,
+                          inputPresent: true,
+                          textInputType: TextInputType.name,
+                          validator: (textValue) {
+                            if (textValue == null || textValue.isEmpty) {
+                              return 'Ce champs est requis!';
+                            }
+                            return null;
+                          }),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      CustomPrefixInput(
+                          labelText: 'Adresse',
+                          hintText: 'Votre adresse',
+                          prefixIcon: const Icon(Icons.location_pin),
+                          prefixPresent: true,
+                          textEditingController: _addressController,
+                          inputPresent: true,
+                          textInputType: TextInputType.streetAddress,
+                          validator: (textValue) {
+                            if (textValue == null || textValue.isEmpty) {
+                              return 'Ce champs est requis!';
+                            }
+                            return null;
+                          }),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      CustomPrefixInput(
+                          labelText: 'Commune',
+                          hintText: 'Votre commune',
+                          prefixIcon: const Icon(Icons.location_pin),
+                          prefixPresent: true,
+                          textEditingController: _communeController,
+                          validator: (textValue) {
+                            if (textValue == null || textValue.isEmpty) {
+                              return 'Ce champs est requis!';
+                            }
+                            return null;
+                          }),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      CustomPrefixInput(
                           labelText: 'Email',
                           hintText: 'Your email id',
-                          isDense: true,
+                          prefixIcon: const Icon(Icons.email),
+                          prefixPresent: true,
+                          textEditingController: _emailController,
+                          inputPresent: true,
+                          textInputType: TextInputType.name,
                           validator: (textValue) {
                             if (textValue == null || textValue.isEmpty) {
                               return 'Email is required!';
@@ -124,24 +166,30 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(
                         height: 16,
                       ),
-                      CustomInputField(
-                          labelText: 'Contact no.',
-                          hintText: 'Your contact number',
-                          isDense: true,
+                      CustomPrefixInput(
+                          labelText: 'Numero de téléphone',
+                          hintText: 'Entrez votre numéro',
+                          prefixIcon: const Icon(Icons.phone),
+                          prefixPresent: true,
+                          inputPresent: true,
+                          textInputType: TextInputType.phone,
+                          textEditingController: _phoneNumberController,
                           validator: (textValue) {
                             if (textValue == null || textValue.isEmpty) {
-                              return 'Contact number is required!';
+                              return 'Votre numéro et requis!';
                             }
                             return null;
                           }),
                       const SizedBox(
                         height: 16,
                       ),
-                      CustomInputField(
+                      CustomPrefixInput(
                         labelText: 'Password',
                         hintText: 'Your password',
-                        isDense: true,
                         obscureText: true,
+                        textInputType: TextInputType.visiblePassword,
+                        textEditingController: _passwordController,
+                        inputPresent: true,
                         validator: (textValue) {
                           if (textValue == null || textValue.isEmpty) {
                             return 'Password is required!';

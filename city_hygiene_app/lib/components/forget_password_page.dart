@@ -1,5 +1,5 @@
 import 'package:city_hygiene_app/components/common/custom_form_button.dart';
-import 'package:city_hygiene_app/components/common/custom_input_field.dart';
+import 'package:city_hygiene_app/components/common/custom_input_prefix.dart';
 import 'package:city_hygiene_app/components/common/page_header.dart';
 import 'package:city_hygiene_app/components/common/page_heading.dart';
 import 'package:city_hygiene_app/components/login_page.dart';
@@ -14,6 +14,7 @@ class ForgetPasswordPage extends StatefulWidget {
 }
 
 class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
+  final TextEditingController _emailController = TextEditingController();
   final _forgetPasswordFormKey = GlobalKey<FormState>();
 
   @override
@@ -38,18 +39,22 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                     child: Column(
                       children: [
                         const PageHeading(
-                          title: 'Forgot password',
+                          title: 'Mot de passe oublié',
                         ),
-                        CustomInputField(
+                        CustomPrefixInput(
                             labelText: 'Email',
-                            hintText: 'Your email id',
-                            isDense: true,
+                            hintText: 'Votre email ici',
+                            textEditingController: _emailController,
+                            inputPresent: true,
+                            textInputType: TextInputType.emailAddress,
+                            prefixPresent: true,
+                            prefixIcon: const Icon(Icons.email),
                             validator: (textValue) {
                               if (textValue == null || textValue.isEmpty) {
-                                return 'Email is required!';
+                                return 'Email requis!';
                               }
                               if (!EmailValidator.validate(textValue)) {
-                                return 'Please enter a valid email';
+                                return 'Veuillez entrer un email correct';
                               }
                               return null;
                             }),
@@ -57,7 +62,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                           height: 20,
                         ),
                         CustomFormButton(
-                          innerText: 'Submit',
+                          innerText: 'Soumettre',
                           onPressed: _handleForgetPassword,
                         ),
                         const SizedBox(
@@ -73,7 +78,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                       builder: (context) => const LoginPage()))
                             },
                             child: const Text(
-                              'Back to login',
+                              'Retour sur connexion',
                               style: TextStyle(
                                 fontSize: 13,
                                 color: Color(0xff939393),
@@ -98,7 +103,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     // forget password
     if (_forgetPasswordFormKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Submitting data..')),
+        const SnackBar(content: Text('Soumission de données..')),
       );
     }
   }

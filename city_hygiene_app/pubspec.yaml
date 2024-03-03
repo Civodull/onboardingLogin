@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   email_validator: ^2.1.17
   image_picker: ^1.0.7
+  jwt_decoder: ^2.0.1
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -61,8 +63,16 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/friendship.png
+    - assets/images/rainforest.png
+    - assets/images/man.png
+    - assets/images/bird.png
+    - assets/images/trash.png
+    - assets/images/rafiki_team.png
+    - assets/images/rafiki_team1.png
+    - assets/images/pana.png
+    - assets/images/amico.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,4 +1,6 @@
 import 'package:city_hygiene_app/components/login_page.dart';
+import 'package:city_hygiene_app/views/home_page.dart';
+import 'package:city_hygiene_app/views/onboarding_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       // We move towards to the main page
-      home: LoginPage(),
+      home: OnboardingPage(),
     );
   }
 }
