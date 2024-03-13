@@ -11,7 +11,6 @@ import 'package:city_hygiene_app/repository/auth_repo_objects/auth_response.dart
 import 'package:city_hygiene_app/repository/auth_repo_objects/user_info.dart';
 import 'package:city_hygiene_app/views/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

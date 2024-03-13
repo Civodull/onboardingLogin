@@ -39,7 +39,21 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                     child: Column(
                       children: [
                         const PageHeading(
-                          title: 'Mot de passe oublié',
+                          title: 'Mot de passe oublié?',
+                        ),
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 23, vertical: 3),
+                          child: Text(
+                            "Ne t'inquiète pas, ça arrive! Entre ton adresse mail et on s'occupe du reste.",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontStyle: FontStyle.normal,
+                                color: Colors.grey),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
                         ),
                         CustomPrefixInput(
                             labelText: 'Email',

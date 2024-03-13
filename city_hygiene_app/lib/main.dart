@@ -15,7 +15,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      // We move towards to the main page
+      // We move towards to the onboarding page
+      //Il serait bon ici de rajouter un check pour voir si
+      //l'onboarding a deja ete fait, si oui on passe directement sur login
       home: OnboardingPage(),
     );
   }

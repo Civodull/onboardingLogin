@@ -71,8 +71,9 @@ class _HomePageState extends State<HomePage> {
             ),
             const ClassicCustomBox(
               firstText: "Le premier texte",
-              secondText: "Le second texte",
-              thirdText: "Le troisieme texte",
+              secondText: "Vider le PAV N-10",
+              thirdText:
+                  "Ce point d'apport volontaire a été signaler par plusieurs utilisateurs",
               numberOfButtons: 1,
             )
           ],

@@ -48,8 +48,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   setState(() {
                     boardingBox = const BoardingBox(
                         assetImage: AssetImage('assets/images/trash.png'),
-                        text1: "Signaler une anomalie sur le domaine public.",
-                        text2: "Participez à l'assainissement urbain");
+                        text1:
+                            "Etes vous prêt à contribuer à la beauté de votre cité.",
+                        text2: "Soyez au coeur de cette transformation.");
                   });
                 } else if (pageLevel == 2) {
                   setState(() {
@@ -57,7 +58,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         assetImage: AssetImage('assets/images/amico.png'),
                         text1:
                             "Restez informé sur les nouvelles de votre commune.",
-                        text2: "Soyez au courant des derniers mouvements");
+                        text2: "Sachez en plus pour plus et mieux agir.");
                   });
                 } else if (pageLevel == 3) {
                   Navigator.push(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Ce sont les champs qui sont utilisé dans l'application
 class CustomPrefixInput extends StatefulWidget {
   final String labelText;
   final String hintText;

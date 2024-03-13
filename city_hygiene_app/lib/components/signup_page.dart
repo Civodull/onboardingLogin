@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'package:city_hygiene_app/components/common/custom_form_button.dart';
-import 'package:city_hygiene_app/components/common/custom_input_field.dart';
 import 'package:city_hygiene_app/components/common/custom_input_prefix.dart';
 import 'package:city_hygiene_app/components/common/page_header.dart';
 import 'package:city_hygiene_app/components/common/page_heading.dart';
 import 'package:city_hygiene_app/components/login_page.dart';
+import 'package:city_hygiene_app/repository/register_repo.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SignupPage extends StatefulWidget {
@@ -29,6 +30,8 @@ class _SignupPageState extends State<SignupPage> {
 
   final _signupFormKey = GlobalKey<FormState>();
 
+  RegisterRepo _registerRepo = RegisterRepo();
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -41,6 +44,8 @@ class _SignupPageState extends State<SignupPage> {
     super.dispose();
   }
 
+  //Garder ce code au cas ou une photo de profile est demandé pour les
+  //utilisateur. Ca permet d'ouvrir la galerie du telephone et choisir.
   Future _pickProfileImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -102,7 +107,7 @@ class _SignupPageState extends State<SignupPage> {
                           hintText: 'Votre prénom',
                           prefixIcon: const Icon(Icons.person),
                           prefixPresent: true,
-                          textEditingController: _nameController,
+                          textEditingController: _firstNameController,
                           inputPresent: true,
                           textInputType: TextInputType.name,
                           validator: (textValue) {
@@ -115,6 +120,8 @@ class _SignupPageState extends State<SignupPage> {
                         height: 16,
                       ),
                       CustomPrefixInput(
+                          //Ce champs n'est pas utilisé au niveau de l'API,
+                          //Le retirer si c'est pertinent.
                           labelText: 'Adresse',
                           hintText: 'Votre adresse',
                           prefixIcon: const Icon(Icons.location_pin),
@@ -132,8 +139,8 @@ class _SignupPageState extends State<SignupPage> {
                         height: 16,
                       ),
                       CustomPrefixInput(
-                          labelText: 'Commune',
-                          hintText: 'Votre commune',
+                          labelText: 'Ville',
+                          hintText: 'Votre ville',
                           prefixIcon: const Icon(Icons.location_pin),
                           prefixPresent: true,
                           textEditingController: _communeController,
@@ -148,7 +155,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       CustomPrefixInput(
                           labelText: 'Email',
-                          hintText: 'Your email id',
+                          hintText: 'Votre email',
                           prefixIcon: const Icon(Icons.email),
                           prefixPresent: true,
                           textEditingController: _emailController,
@@ -156,7 +163,7 @@ class _SignupPageState extends State<SignupPage> {
                           textInputType: TextInputType.name,
                           validator: (textValue) {
                             if (textValue == null || textValue.isEmpty) {
-                              return 'Email is required!';
+                              return "L'email est requis!";
                             }
                             if (!EmailValidator.validate(textValue)) {
                               return 'Please enter a valid email';
@@ -184,15 +191,15 @@ class _SignupPageState extends State<SignupPage> {
                         height: 16,
                       ),
                       CustomPrefixInput(
-                        labelText: 'Password',
-                        hintText: 'Your password',
+                        labelText: 'Mot de passe',
+                        hintText: 'Votre mot de passe',
                         obscureText: true,
                         textInputType: TextInputType.visiblePassword,
                         textEditingController: _passwordController,
                         inputPresent: true,
                         validator: (textValue) {
                           if (textValue == null || textValue.isEmpty) {
-                            return 'Password is required!';
+                            return 'Le mot de passe est requis!';
                           }
                           return null;
                         },
@@ -214,7 +221,7 @@ class _SignupPageState extends State<SignupPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const Text(
-                              'Already have an account ? ',
+                              'Vous avez déja un compte ? ',
                               style: TextStyle(
                                   fontSize: 13,
                                   color: Color(0xff939393),
@@ -229,7 +236,7 @@ class _SignupPageState extends State<SignupPage> {
                                             const LoginPage()))
                               },
                               child: const Text(
-                                'Log-in',
+                                'Connexion',
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: Color(0xff748288),
@@ -253,12 +260,66 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  void _handleSignupUser() {
+  void _handleSignupUser() async {
     // signup user
     if (_signupFormKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Submitting data..')),
+        const SnackBar(content: Text('Soumission des données..')),
       );
+      int villeId = 0;
+
+      if (_communeController.text == "Libreville") {
+        villeId = 1;
+        //CE CODE EST PAS COMPLET!!!!
+        //Il faut convenir avec le responsable de l'API pour
+        //voir comment mapper chaque nom de ville avec leur ID,
+        //Car ce sont les ID (int) qui sont passé dans l'API.
+      }
+      bool didRegistSucceed = false;
+      didRegistSucceed = await _registerRepo.registerUser(
+          _firstNameController.text,
+          _nameController.text,
+          _emailController.text,
+          _passwordController.text,
+          _phoneNumberController.text,
+          villeId);
+
+      if (didRegistSucceed) {
+        showRegularToast(
+            "Veuillez vérifier votre email pour activer votre compte.");
+        moveToLogin();
+      }
     }
+  }
+
+  void showRegularToast(String toastText) {
+    FToast fToast = FToast();
+    fToast.init(context);
+
+    fToast.showToast(
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Colors.white38,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Text(
+          toastText,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+          ),
+        ),
+      ),
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 2),
+    );
+  }
+
+  void moveToLogin() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
   }
 }
