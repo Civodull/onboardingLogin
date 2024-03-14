@@ -30,7 +30,7 @@ class _SignupPageState extends State<SignupPage> {
 
   final _signupFormKey = GlobalKey<FormState>();
 
-  RegisterRepo _registerRepo = RegisterRepo();
+  final RegisterRepo _registerRepo = RegisterRepo();
 
   @override
   void dispose() {
@@ -60,7 +60,6 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffEEF1F3),

@@ -68,20 +68,21 @@ class _ClassicCustomBoxState extends State<ClassicCustomBox> {
             const SizedBox(
               height: 10,
             ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Text(
-                widget.thirdText!,
-                style: const TextStyle(
-                  color: Colors.black54,
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
+          if (widget.thirdText != null)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Text(
+                  widget.thirdText!,
+                  style: const TextStyle(
+                    color: Colors.black54,
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
               ),
             ),
-          ),
           const SizedBox(
             height: 10,
           ),
